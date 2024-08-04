@@ -61,28 +61,32 @@ class Search(commands.Cog):
             "device": "desktop",
             "t": type,
         }
-        async with self.session.get(
-            QWANT_API_BASE + "/search/" + type, params=params
-        ) as resp:
-            if resp.status != 200:
-                return None, None
-            data = await resp.json()
-            _items = data["data"]["result"]["items"]
-            items = _items
-            sidebar = None
+        try:
+            async with self.session.get(
+                QWANT_API_BASE + "/search/" + type, params=params
+            ) as resp:
+                if resp.status != 200:
+                    return None, []
+                data = await resp.json()
+                _items = data["data"]["result"]["items"]
+                items = _items
+                sidebar = None
 
-            if type == "web":
+                if type == "web":
+                    items = {}
+                    for result in _items["mainline"]:
+                        if result["type"] == type:
+                            items = result["items"]  # Filters out ads
 
-                items = {}
-                for result in _items["mainline"]:
-                    if result["type"] == type:
-                        items = result["items"]  # Filters out ads
+                    for result in _items["sidebar"]:
+                        if result["type"] == "ia/knowledge":
+                            sidebar = result["endpoint"]
 
-                for result in _items["sidebar"]:
-                    if result["type"] == "ia/knowledge":
-                        sidebar = result["endpoint"]
+                return sidebar, items
+        except Exception as e:
+            print(f"Error in _search_qwant: {e}")
+            return None, []
 
-            return sidebar, items
 
     @commands.command(aliases=["google"])
     @commands.bot_has_permissions(embed_links=True)

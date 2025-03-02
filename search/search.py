@@ -15,7 +15,7 @@ class Search(commands.Cog):
     Search the web, from Discord.
     """
 
-    __version__ = "2.0.3"
+    __version__ = "2.0.4"
 
     def __init__(self, bot: Red):
         """
@@ -54,11 +54,13 @@ class Search(commands.Cog):
         safesearch = 0 if ctx.channel.is_nsfw() or ctx.guild is None else 1
         params = {
             "q": query,
+            "origin": "suggest",
             "count": count,
-            "offset": 0,
-            "safesearch": safesearch,
             "locale": "en_US",
+            "offset": 0,
             "device": "desktop",
+            "tgp": 4,
+            "safesearch": safesearch,
             "t": type,
         }
         async with self.session.get(

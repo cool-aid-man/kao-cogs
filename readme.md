@@ -26,4 +26,3 @@ Please join my support server [here](https://discord.gg/p6ehU9qhg8) if you have 
 | Search       | v2.0.3  | Search the web from Discord.                                                             |
 | SFX          | v7.1.1  | Plays sound effects, text-to-speech, and join/leave sounds. (originally made by baiumbg) |
 | SmartLyrics  | v3.0.5  | Gets lyrics for your current song.                                                       |
-| YTDL         | v2.1.0  | Download YouTube videos.                                                                 |
